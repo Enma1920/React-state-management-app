@@ -1,13 +1,6 @@
 import { useState } from "react";
+import { Button, SectionHeader, NoFeedback, StatisticLine } from "./components";
 
-const StatisticLine = ({ text, value }) => {
-  return (
-    <tr>
-      <td>{text}</td>
-      <td>{value}</td>
-    </tr>
-  );
-};
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad;
@@ -18,7 +11,7 @@ const Statistics = ({ good, neutral, bad }) => {
 
   return (
     <>
-      <h1>Statistics</h1>
+      <SectionHeader title="Statistics" />
       <table>
         <tbody>
           <StatisticLine text="good" value={good} />
@@ -40,7 +33,19 @@ const App = () => {
 
   const [bad, setBad] = useState(0);
 
-  const hasFeedback = good + neutral + bad > 0;
+  const handleIncreaseGood = ()=>{
+    setGood((prevTotal)=>(prevTotal+1));
+  }
+  
+  const handleIncreaseNeutral = ()=>{
+    setNeutral((prevTotal)=>(prevTotal+1));
+  };
+
+  const handleIncreaseBad = ()=>{ 
+    setBad((prevTotal)=>(prevTotal+1));
+  };
+
+  const hasFeedback = good + neutral + bad;
 
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -56,7 +61,8 @@ const App = () => {
   const [selected, setSelected] = useState(0);
 
   const handleNext = () => {
-    const randomIndex = Math.floor(Math.random() * anecdotes.length);
+    const anecdotesRange = anecdotes.length;
+    const randomIndex = Math.floor(Math.random() * anecdotesRange);
     setSelected(randomIndex);
   };
 
@@ -72,28 +78,34 @@ const App = () => {
 
   return (
     <>
-      <h1>Give Feedback</h1>
-      <button onClick={() => setGood(good + 1)}>Good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>Neutral</button>
-      <button onClick={() => setBad(bad + 1)}>Bad</button>
+      <section>
 
-      {hasFeedback ? (
-        <Statistics good={good} neutral={neutral} bad={bad} />
-      ) : (
-        <p>No feedback given</p>
-      )}
+        <SectionHeader title="Give Feedback" />
+        <Button label="Good" handle={handleIncreaseGood} />
+        <Button label="Neutral" handle={handleIncreaseNeutral} />
+        <Button label="Bad" handle={handleIncreaseBad} />
+        {hasFeedback>0 && <Statistics good={good} neutral={neutral} bad={bad} /> || <NoFeedback text="No feedback given"/> }
 
-      <div>
-        <h1>Anecdote of the day</h1>
+      </section>
+
+      <section>
+
+        <SectionHeader title="Anecdote of the day" />
         <p>{anecdotes[selected]}</p>
-        <button onClick={handleVote}>Votar</button>
-        <button onClick={handleNext}>Siguiente anécdota</button>
+        <Button label="votar" handle={handleVote} />
+        <Button label="siguiente anecdota" handle={handleNext} />
         <p>has {votes[selected]} votes</p>
+      </section>
 
-        <h1>Anecdote with most votes</h1>
+      <section>
+
+        <SectionHeader title="Anecdote with most votes" />
         <p>{anecdotes[mostVotedIndex]}</p>
         <p>has {votes[mostVotedIndex]} votes</p>
-      </div>
+
+      </section>
+
+
     </>
   );
 };
