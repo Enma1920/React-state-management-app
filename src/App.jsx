@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button, SectionHeader, NoFeedback, StatisticLine } from "./components";
 
-
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad;
 
@@ -33,16 +32,16 @@ const App = () => {
 
   const [bad, setBad] = useState(0);
 
-  const handleIncreaseGood = ()=>{
-    setGood((prevTotal)=>(prevTotal+1));
-  }
-  
-  const handleIncreaseNeutral = ()=>{
-    setNeutral((prevTotal)=>(prevTotal+1));
+  const handleIncreaseGood = () => {
+    setGood((prevTotal) => prevTotal + 1);
   };
 
-  const handleIncreaseBad = ()=>{ 
-    setBad((prevTotal)=>(prevTotal+1));
+  const handleIncreaseNeutral = () => {
+    setNeutral((prevTotal) => prevTotal + 1);
+  };
+
+  const handleIncreaseBad = () => {
+    setBad((prevTotal) => prevTotal + 1);
   };
 
   const hasFeedback = good + neutral + bad;
@@ -79,17 +78,16 @@ const App = () => {
   return (
     <>
       <section>
-
         <SectionHeader title="Give Feedback" />
         <Button label="Good" handle={handleIncreaseGood} />
         <Button label="Neutral" handle={handleIncreaseNeutral} />
         <Button label="Bad" handle={handleIncreaseBad} />
-        {hasFeedback>0 && <Statistics good={good} neutral={neutral} bad={bad} /> || <NoFeedback text="No feedback given"/> }
-
+        {(hasFeedback > 0 && (
+          <Statistics good={good} neutral={neutral} bad={bad} />
+        )) || <NoFeedback text="No feedback given" />}
       </section>
 
       <section>
-
         <SectionHeader title="Anecdote of the day" />
         <p>{anecdotes[selected]}</p>
         <Button label="votar" handle={handleVote} />
@@ -98,14 +96,10 @@ const App = () => {
       </section>
 
       <section>
-
         <SectionHeader title="Anecdote with most votes" />
         <p>{anecdotes[mostVotedIndex]}</p>
         <p>has {votes[mostVotedIndex]} votes</p>
-
       </section>
-
-
     </>
   );
 };
